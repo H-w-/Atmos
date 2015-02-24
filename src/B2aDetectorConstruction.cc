@@ -34,7 +34,7 @@
  
 #include "B2aDetectorConstruction.hh"
 #include "B2aDetectorMessenger.hh"
-#include "B2TrackerSD.hh"
+//#include "B2TrackerSD.hh"
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
@@ -67,13 +67,14 @@ B2aDetectorConstruction::B2aDetectorConstruction()
 :G4VUserDetectorConstruction(), 
  fNbOfChambers(10),
  fLogicTarget(NULL), fLogicChamber(NULL), 
- fTargetMaterial(NULL), fChamberMaterial(NULL), 
+ fTargetMaterial(NULL), 
  fStepLimit(NULL),
  fCheckOverlaps(true)
 {
   fMessenger = new B2aDetectorMessenger(this);
 
   fLogicChamber = new G4LogicalVolume*[fNbOfChambers];
+  fChamberMaterials = new G4Material*[fNbOfChambers];
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -105,18 +106,18 @@ G4VPhysicalVolume* B2aDetectorConstruction::Construct()
   G4double chamber_z = 5*km;
   G4double chamberSpacing = 10*km; // from chamber center to center!
 
-  G4double target_x = 5*km;
+/*  G4double target_x = 5*km;
   G4double target_y = 5*km; 
-  G4double target_z = 5*km;
+  G4double target_z = 5*km;*/
  
-  G4double tracker_x = 5*km;  
+/*  G4double tracker_x = 5*km;  
   G4double tracker_y = ((10+1)*chamberSpacing)/2; //fNbofChmbers isn't working here don't know why
-  G4double tracker_z = 5*km;
+  G4double tracker_z = 5*km;*/
 
   G4double world_x = 5*km;
-  G4double world_y = 1.1 * tracker_y;
+  G4double world_y = 1.1 * ((10+1)*chamberSpacing)/2;
   G4double world_z = 5*km;
-  G4double firstPosition = -tracker_y + chamberSpacing;
+  G4double firstPosition = -((10+1)*chamberSpacing)/2 + chamberSpacing;
 
 void B2aDetectorConstruction::DefineMaterials()
 {
@@ -135,8 +136,8 @@ void B2aDetectorConstruction::DefineMaterials()
     G4double height = (i+1)*chamberSpacing; //remember the bottom half of world is -ve but this has to be +ve
     std::stringstream ss;
     ss << "name_" << i;
-    G4String name = ss.str();
-    new G4Material(name,(exp(-height/scale_h))*density_air,air);
+    G4String name = ss.str();    
+    fChamberMaterials[i] = new G4Material(name,(exp(-height/scale_h))*density_air,air);
     nistManager->FindOrBuildMaterial(name);
   }
 
@@ -172,9 +173,9 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   // Target
   
-  G4ThreeVector target_pos = G4ThreeVector(0,target_y-tracker_y,0); //should be at bottom just touch bottom edge 
+ // G4ThreeVector target_pos = G4ThreeVector(0,target_y-world_y,0); //should be at bottom just touch bottom edge 
 
-  G4Box* targetBox
+  /*G4Box* targetBox
     = new G4Box("Target",target_x,target_y,target_z);
 
   fLogicTarget // the pointer bit is in header file, so it can be accesses form other .cc files
@@ -187,10 +188,10 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     worldLV,         // its mother volume
                     false,           // no boolean operations
                     0,               // copy number
-                    fCheckOverlaps); // checking overlaps 
+                    fCheckOverlaps); // checking overlaps */
 
 
-  G4Box* trackerBox
+/*  G4Box* trackerBox
     = new G4Box("Tracker",tracker_x,tracker_y,tracker_z);
   G4LogicalVolume* trackerLV
     = new G4LogicalVolume(trackerBox, air, "Tracker",0,0,0);  
@@ -201,7 +202,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     worldLV,         // its mother  volume
                     false,           // no boolean operations
                     0,               // copy number
-                    fCheckOverlaps); // checking overlaps 
+                    fCheckOverlaps); // checking overlaps */
 
   // Visualization attributes
 
@@ -209,8 +210,8 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
   G4VisAttributes* chamberVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,0.0));
 
   worldLV      ->SetVisAttributes(boxVisAtt);
-  fLogicTarget ->SetVisAttributes(boxVisAtt);
-  trackerLV    ->SetVisAttributes(boxVisAtt);
+ // fLogicTarget ->SetVisAttributes(boxVisAtt);
+//  trackerLV    ->SetVisAttributes(boxVisAtt);
 
 
 
@@ -223,7 +224,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
         = new G4Box("Chamber_solid", chamber_x, chamber_y, chamber_z);
 
       fLogicChamber[copyNo] =
-              new G4LogicalVolume(chamberBox,fChamberMaterial,"Chamber_LV",0,0,0);
+              new G4LogicalVolume(chamberBox,fChamberMaterials[copyNo],"Chamber_LV",0,0,0);
 
       fLogicChamber[copyNo]->SetVisAttributes(chamberVisAtt);
 
@@ -231,7 +232,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                         G4ThreeVector(0,Yposition,0), // at (x,y,z)
                         fLogicChamber[copyNo],        // its logical volume
                         "Chamber_PV",                 // its name
-                        trackerLV,                    // its mother  volume
+                        worldLV,                    // its mother  volume
                         false,                        // no boolean operations
                         copyNo,                       // copy number
                         fCheckOverlaps);              // checking overlaps 
@@ -247,7 +248,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   G4double maxStep = 0.5*chamber_x;
   fStepLimit = new G4UserLimits(maxStep);
-  trackerLV->SetUserLimits(fStepLimit);
+//  trackerLV->SetUserLimits(fStepLimit);
  
   // Always return the physical world
 
@@ -260,7 +261,7 @@ void B2aDetectorConstruction::ConstructSDandField()
 {
   // Sensitive detectors
 
-  G4String trackerChamberSDname = "B2/TrackerChamberSD";
+/*  G4String trackerChamberSDname = "B2/TrackerChamberSD";
   B2TrackerSD* aTrackerSD = new B2TrackerSD(trackerChamberSDname,
                                             "TrackerHitsCollection");
   // Setting aTrackerSD to all logical volumes with the same name 
@@ -275,14 +276,14 @@ void B2aDetectorConstruction::ConstructSDandField()
   fMagFieldMessenger->SetVerboseLevel(1);
   
   // Register the field messenger for deleting
-  G4AutoDelete::Register(fMagFieldMessenger);
+  G4AutoDelete::Register(fMagFieldMessenger);*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
  
 void B2aDetectorConstruction::SetTargetMaterial(G4String materialName)
 {
-  G4NistManager* nistManager = G4NistManager::Instance();
+/*  G4NistManager* nistManager = G4NistManager::Instance();
 
   G4Material* pttoMaterial = 
               nistManager->FindOrBuildMaterial(materialName);
@@ -300,14 +301,15 @@ void B2aDetectorConstruction::SetTargetMaterial(G4String materialName)
           << "-->  WARNING from SetTargetMaterial : "
           << materialName << " not found" << G4endl;
      }
-  }
+  }*/
 }
  
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void B2aDetectorConstruction::SetChamberMaterial(G4String materialName)
 {
-  G4NistManager* nistManager = G4NistManager::Instance();
+  G4cout << "DO NOT USE THIS!" << G4endl;
+  /*G4NistManager* nistManager = G4NistManager::Instance();
 
   G4Material* pttoMaterial =
               nistManager->FindOrBuildMaterial(materialName);
@@ -328,7 +330,7 @@ void B2aDetectorConstruction::SetChamberMaterial(G4String materialName)
           << "-->  WARNING from SetChamberMaterial : "
           << materialName << " not found" << G4endl;
      }
-  }
+  }*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

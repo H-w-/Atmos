@@ -34,7 +34,7 @@
  
 #include "B2aDetectorConstruction.hh"
 #include "B2aDetectorMessenger.hh"
-#include "B2TrackerSD.hh"
+//#include "B2TrackerSD.hh"
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
@@ -109,14 +109,14 @@ G4VPhysicalVolume* B2aDetectorConstruction::Construct()
   G4double target_y = 5*km; 
   G4double target_z = 5*km;
  
-  G4double tracker_x = 5*km;  
+/*  G4double tracker_x = 5*km;  
   G4double tracker_y = ((10+1)*chamberSpacing)/2; //fNbofChmbers isn't working here don't know why
-  G4double tracker_z = 5*km;
+  G4double tracker_z = 5*km;*/
 
   G4double world_x = 5*km;
-  G4double world_y = 1.1 * tracker_y;
+  G4double world_y = 1.1 * ((10+1)*chamberSpacing)/2;
   G4double world_z = 5*km;
-  G4double firstPosition = -tracker_y + chamberSpacing;
+  G4double firstPosition = -((10+1)*chamberSpacing)/2 + chamberSpacing;
 
 void B2aDetectorConstruction::DefineMaterials()
 {
@@ -172,7 +172,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   // Target
   
-  G4ThreeVector target_pos = G4ThreeVector(0,target_y-tracker_y,0); //should be at bottom just touch bottom edge 
+  G4ThreeVector target_pos = G4ThreeVector(0,target_y-world_y,0); //should be at bottom just touch bottom edge 
 
   G4Box* targetBox
     = new G4Box("Target",target_x,target_y,target_z);
@@ -190,7 +190,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     fCheckOverlaps); // checking overlaps 
 
 
-  G4Box* trackerBox
+/*  G4Box* trackerBox
     = new G4Box("Tracker",tracker_x,tracker_y,tracker_z);
   G4LogicalVolume* trackerLV
     = new G4LogicalVolume(trackerBox, air, "Tracker",0,0,0);  
@@ -201,7 +201,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     worldLV,         // its mother  volume
                     false,           // no boolean operations
                     0,               // copy number
-                    fCheckOverlaps); // checking overlaps 
+                    fCheckOverlaps); // checking overlaps */
 
   // Visualization attributes
 
@@ -210,7 +210,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   worldLV      ->SetVisAttributes(boxVisAtt);
   fLogicTarget ->SetVisAttributes(boxVisAtt);
-  trackerLV    ->SetVisAttributes(boxVisAtt);
+//  trackerLV    ->SetVisAttributes(boxVisAtt);
 
 
 
@@ -231,7 +231,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                         G4ThreeVector(0,Yposition,0), // at (x,y,z)
                         fLogicChamber[copyNo],        // its logical volume
                         "Chamber_PV",                 // its name
-                        trackerLV,                    // its mother  volume
+                        worldLV,                    // its mother  volume
                         false,                        // no boolean operations
                         copyNo,                       // copy number
                         fCheckOverlaps);              // checking overlaps 
@@ -247,7 +247,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   G4double maxStep = 0.5*chamber_x;
   fStepLimit = new G4UserLimits(maxStep);
-  trackerLV->SetUserLimits(fStepLimit);
+//  trackerLV->SetUserLimits(fStepLimit);
  
   // Always return the physical world
 
@@ -260,7 +260,7 @@ void B2aDetectorConstruction::ConstructSDandField()
 {
   // Sensitive detectors
 
-  G4String trackerChamberSDname = "B2/TrackerChamberSD";
+/*  G4String trackerChamberSDname = "B2/TrackerChamberSD";
   B2TrackerSD* aTrackerSD = new B2TrackerSD(trackerChamberSDname,
                                             "TrackerHitsCollection");
   // Setting aTrackerSD to all logical volumes with the same name 
@@ -275,7 +275,7 @@ void B2aDetectorConstruction::ConstructSDandField()
   fMagFieldMessenger->SetVerboseLevel(1);
   
   // Register the field messenger for deleting
-  G4AutoDelete::Register(fMagFieldMessenger);
+  G4AutoDelete::Register(fMagFieldMessenger);*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

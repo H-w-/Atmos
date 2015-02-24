@@ -67,13 +67,14 @@ B2aDetectorConstruction::B2aDetectorConstruction()
 :G4VUserDetectorConstruction(), 
  fNbOfChambers(10),
  fLogicTarget(NULL), fLogicChamber(NULL), 
- fTargetMaterial(NULL), fChamberMaterial(NULL), 
+ fTargetMaterial(NULL), 
  fStepLimit(NULL),
  fCheckOverlaps(true)
 {
   fMessenger = new B2aDetectorMessenger(this);
 
   fLogicChamber = new G4LogicalVolume*[fNbOfChambers];
+  fChamberMaterials = new G4Material*[fNbOfChambers];
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -135,8 +136,8 @@ void B2aDetectorConstruction::DefineMaterials()
     G4double height = (i+1)*chamberSpacing; //remember the bottom half of world is -ve but this has to be +ve
     std::stringstream ss;
     ss << "name_" << i;
-    G4String name = ss.str();
-    new G4Material(name,(exp(-height/scale_h))*density_air,air);
+    G4String name = ss.str();    
+    fChamberMaterials[i] = new G4Material(name,(exp(-height/scale_h))*density_air,air);
     nistManager->FindOrBuildMaterial(name);
   }
 
@@ -223,7 +224,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
         = new G4Box("Chamber_solid", chamber_x, chamber_y, chamber_z);
 
       fLogicChamber[copyNo] =
-              new G4LogicalVolume(chamberBox,fChamberMaterial,"Chamber_LV",0,0,0);
+              new G4LogicalVolume(chamberBox,fChamberMaterials[copyNo],"Chamber_LV",0,0,0);
 
       fLogicChamber[copyNo]->SetVisAttributes(chamberVisAtt);
 
@@ -307,7 +308,8 @@ void B2aDetectorConstruction::SetTargetMaterial(G4String materialName)
 
 void B2aDetectorConstruction::SetChamberMaterial(G4String materialName)
 {
-  G4NistManager* nistManager = G4NistManager::Instance();
+  G4cout << "DO NOT USE THIS!" << G4endl;
+  /*G4NistManager* nistManager = G4NistManager::Instance();
 
   G4Material* pttoMaterial =
               nistManager->FindOrBuildMaterial(materialName);
@@ -328,7 +330,7 @@ void B2aDetectorConstruction::SetChamberMaterial(G4String materialName)
           << "-->  WARNING from SetChamberMaterial : "
           << materialName << " not found" << G4endl;
      }
-  }
+  }*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

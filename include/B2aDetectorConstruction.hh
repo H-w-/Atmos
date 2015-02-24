@@ -74,7 +74,7 @@ class B2aDetectorConstruction : public G4VUserDetectorConstruction
     G4LogicalVolume**  fLogicChamber;    // pointer to the logical Chamber
 
     G4Material*        fTargetMaterial;  // pointer to the target  material
-    G4Material*        fChamberMaterial; // pointer to the chamber material
+    G4Material**        fChamberMaterials; // pointer to the chamber material
 
     G4UserLimits* fStepLimit;            // pointer to user step limits
 

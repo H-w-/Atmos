@@ -105,9 +105,9 @@ G4VPhysicalVolume* B2aDetectorConstruction::Construct()
   G4double chamber_z = 5*km;
   G4double chamberSpacing = 10*km; // from chamber center to center!
 
-  G4double target_x = 5*km;
+/*  G4double target_x = 5*km;
   G4double target_y = 5*km; 
-  G4double target_z = 5*km;
+  G4double target_z = 5*km;*/
  
 /*  G4double tracker_x = 5*km;  
   G4double tracker_y = ((10+1)*chamberSpacing)/2; //fNbofChmbers isn't working here don't know why
@@ -172,9 +172,9 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   // Target
   
-  G4ThreeVector target_pos = G4ThreeVector(0,target_y-world_y,0); //should be at bottom just touch bottom edge 
+ // G4ThreeVector target_pos = G4ThreeVector(0,target_y-world_y,0); //should be at bottom just touch bottom edge 
 
-  G4Box* targetBox
+  /*G4Box* targetBox
     = new G4Box("Target",target_x,target_y,target_z);
 
   fLogicTarget // the pointer bit is in header file, so it can be accesses form other .cc files
@@ -187,7 +187,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     worldLV,         // its mother volume
                     false,           // no boolean operations
                     0,               // copy number
-                    fCheckOverlaps); // checking overlaps 
+                    fCheckOverlaps); // checking overlaps */
 
 
 /*  G4Box* trackerBox
@@ -209,7 +209,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
   G4VisAttributes* chamberVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,0.0));
 
   worldLV      ->SetVisAttributes(boxVisAtt);
-  fLogicTarget ->SetVisAttributes(boxVisAtt);
+ // fLogicTarget ->SetVisAttributes(boxVisAtt);
 //  trackerLV    ->SetVisAttributes(boxVisAtt);
 
 
@@ -282,7 +282,7 @@ void B2aDetectorConstruction::ConstructSDandField()
  
 void B2aDetectorConstruction::SetTargetMaterial(G4String materialName)
 {
-  G4NistManager* nistManager = G4NistManager::Instance();
+/*  G4NistManager* nistManager = G4NistManager::Instance();
 
   G4Material* pttoMaterial = 
               nistManager->FindOrBuildMaterial(materialName);
@@ -300,7 +300,7 @@ void B2aDetectorConstruction::SetTargetMaterial(G4String materialName)
           << "-->  WARNING from SetTargetMaterial : "
           << materialName << " not found" << G4endl;
      }
-  }
+  }*/
 }
  
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

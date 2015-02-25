@@ -38,6 +38,9 @@
 #include "G4ParticleTable.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4SystemOfUnits.hh"
+#include <cmath>
+#include <cstdlib>
+#include <iostream>
 
 #include "Randomize.hh"
 
@@ -56,7 +59,23 @@ B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
 
   fParticleGun->SetParticleDefinition(particleDefinition);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  fParticleGun->SetParticleEnergy(3.0*GeV);
+
+  // generate a random number between 0 and 1
+G4double powrand = ((G4double) rand() / (RAND_MAX));
+std::cout << " **  Random number " << powrand << std::endl;
+
+
+G4double Emax = (100000 *GeV);
+G4double Emin = (1*GeV);
+G4double delta = (1 - 2.8);
+
+  // generate particle energy from power law with random picking
+G4double nd = pow(Emax,delta) + (pow(Emin,delta)- pow(Emax,delta))*powrand;
+	 nd = pow( nd, (1/delta) );
+
+G4cout << " **  Particle Energy " << nd << G4endl;
+
+  fParticleGun->SetParticleEnergy(nd);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

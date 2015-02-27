@@ -65,7 +65,7 @@ G4GlobalMagFieldMessenger* B2aDetectorConstruction::fMagFieldMessenger = 0;
 
 B2aDetectorConstruction::B2aDetectorConstruction()
 :G4VUserDetectorConstruction(), 
- fNbOfChambers(10),
+ fNbOfChambers(20),
  fLogicTarget(NULL), fLogicChamber(NULL), 
  fTargetMaterial(NULL), 
  fStepLimit(NULL),
@@ -101,10 +101,12 @@ G4VPhysicalVolume* B2aDetectorConstruction::Construct()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-  G4double chamber_x = 5*km;
-  G4double chamber_y = 5*km;
-  G4double chamber_z = 5*km;
-  G4double chamberSpacing = 10*km; // from chamber center to center!
+  G4double scale_h = 84*cm;
+
+  G4double chamber_x = 1*m;
+  G4double chamber_y = 0.1*m;
+  G4double chamber_z = 1*m;
+  G4double chamberSpacing = chamber_y; // from chamber center to center!
 
 /*  G4double target_x = 5*km;
   G4double target_y = 5*km; 
@@ -114,10 +116,10 @@ G4VPhysicalVolume* B2aDetectorConstruction::Construct()
   G4double tracker_y = ((10+1)*chamberSpacing)/2; //fNbofChmbers isn't working here don't know why
   G4double tracker_z = 5*km;*/
 
-  G4double world_x = 5*km;
-  G4double world_y = 1.1 * ((10+1)*chamberSpacing)/2;
-  G4double world_z = 5*km;
-  G4double firstPosition = -((10+1)*chamberSpacing)/2 + chamberSpacing;
+  G4double world_x = 1*m;
+  G4double world_y = 3*m;
+  G4double world_z = 1*m;
+  G4double firstPosition = 0*m; //-((118+1)*chamberSpacing)/2 + chamberSpacing;
 
 void B2aDetectorConstruction::DefineMaterials()
 {
@@ -130,7 +132,7 @@ void B2aDetectorConstruction::DefineMaterials()
 
   G4double density_air = 1.205*mg/cm3;
   G4Material* air  = G4Material::GetMaterial("G4_AIR");
-  G4double scale_h = 8.4*km;
+  
 
   for (G4int i = 0; i < fNbOfChambers; i++){
     G4double height = (i+1)*chamberSpacing; //remember the bottom half of world is -ve but this has to be +ve

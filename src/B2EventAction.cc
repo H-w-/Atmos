@@ -71,10 +71,10 @@ void B2EventAction::EndOfEventAction(const G4Event* event)
       G4cout << "    " << n_trajectories
              << " trajectories stored in this event." << G4endl;
     }
-    // FIXME: This must have been crucial
-    //G4VHitsCollection* hc = event->GetHCofThisEvent()->GetHC(0);
-    //G4cout << "    "  
-    //       << hc->GetSize() << " hits stored in this event" << G4endl;
+    // FIXME: This must have been crucial this gives all of the information we need for the project
+    G4VHitsCollection* hc = event->GetHCofThisEvent()->GetHC(0);
+    G4cout << "    "  
+           << hc->GetSize() << " hits stored in this event" << G4endl;
   }
 }  
 

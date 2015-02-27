@@ -65,6 +65,11 @@ void B2EventAction::EndOfEventAction(const G4Event* event)
   // periodic printing
 
   G4int eventID = event->GetEventID();
+   G4cout << "Hello im running the event handler" << G4endl;
+
+  if (event == 0) {
+    G4cout << "EVENT  0" << G4endl;
+  }
   if ( eventID < 100 || eventID % 100 == 0) {
     G4cout << ">>> Event: " << eventID  << G4endl;
     if ( trajectoryContainer ) {
@@ -73,6 +78,9 @@ void B2EventAction::EndOfEventAction(const G4Event* event)
     }
     // FIXME: This must have been crucial this gives all of the information we need for the project
     G4VHitsCollection* hc = event->GetHCofThisEvent()->GetHC(0);
+    if (hc == 0){
+      G4cout << "HC 0" << G4endl;
+    }
     G4cout << "    "  
            << hc->GetSize() << " hits stored in this event" << G4endl;
   }

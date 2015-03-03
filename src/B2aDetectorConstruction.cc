@@ -65,7 +65,7 @@ G4GlobalMagFieldMessenger* B2aDetectorConstruction::fMagFieldMessenger = 0;
 
 B2aDetectorConstruction::B2aDetectorConstruction()
 :G4VUserDetectorConstruction(), 
- fNbOfChambers(20),
+ fNbOfChambers(99),
  fLogicTarget(NULL), fLogicChamber(NULL), 
  fTargetMaterial(NULL), 
  fStepLimit(NULL),
@@ -101,25 +101,32 @@ G4VPhysicalVolume* B2aDetectorConstruction::Construct()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-  G4double scale_h = 84*cm;
+  G4double scale_h = 8.4*km;
 
-  G4double chamber_x = 1*m;
-  G4double chamber_y = 0.1*m;
-  G4double chamber_z = 1*m;
-  G4double chamberSpacing = chamber_y; // from chamber center to center!
+  G4double chamber_x = 5*km;
+  G4double chamber_y = 0.5*km;
+  G4double chamber_z = 5*km;
+  G4double chamberSpacing = chamber_y*2; // from chamber center to center!
+  G4double firstPosition = -48.5*km;
 
-  G4double target_x = 1*m;
-  G4double target_y = 0.1*m; 
-  G4double target_z = 1*m;
+  G4double target_x = 5*km;
+  G4double target_y = 0.5*km; 
+  G4double target_z = 5*km;
+  G4ThreeVector target_pos = G4ThreeVector(0,-49.5*km,0);
+/*
+  G4double vertical_x = 0.5*km;
+  G4double vertical_y = 0.5*km;
+  G4double vertical_z = 5*km;
+  G4ThreeVector vertical_pos = G4ThreeVector(0,-49.5*km,0);*/
 
-  G4double tracker_x = 1*m;  
-  G4double tracker_y = 21*chamber_y; //fNbofChmbers isn't working here don't know why
-  G4double tracker_z = 1*m;
+  G4double tracker_x = 5*km;  
+  G4double tracker_y = 50*km; //fNbofChmbers isn't working here don't know why
+  G4double tracker_z = 5*km;
 
-  G4double world_x = 1.1*m;
-  G4double world_y = 2*m;
-  G4double world_z = 1.1*m;
-  G4double firstPosition = 0*m; //-((118+1)*chamberSpacing)/2 + chamberSpacing;
+  G4double world_x = 5.5*km;
+  G4double world_y = 51*km;
+  G4double world_z = 5.5*km;
+  
 
 void B2aDetectorConstruction::DefineMaterials()
 {
@@ -173,9 +180,6 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                  0,               // copy number
                  fCheckOverlaps); // checking overlaps 
 
-  // Target
-  
-  G4ThreeVector target_pos = G4ThreeVector(0,-1.95,0); //should be at bottom just touch bottom edge 
 
   G4Box* targetBox
     = new G4Box("Target",target_x,target_y,target_z);
@@ -191,6 +195,22 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     false,           // no boolean operations
                     0,               // copy number
                     fCheckOverlaps); // checking overlaps 
+
+
+/*    G4Box* verticalBox
+    = new G4Box("Vertical",vertical_x, vertical_y , vertical_z);
+
+  fLogicVertical // the pointer bit is in header file, so it can be accesses form other .cc files
+    = new G4LogicalVolume(verticalBox, air,"Vertical",0,0,0);
+
+  new G4PVPlacement(0,               // no rotation
+                    vertical_pos,  // at (x,y,z)
+                    fLogicVertical,    // its logical volume
+                    "Vertical",        // its name
+                    worldLV,         // its mother volume
+                    false,           // no boolean operations
+                    0,               // copy number
+                    fCheckOverlaps); // checking overlaps */
 
 
   G4Box* trackerBox

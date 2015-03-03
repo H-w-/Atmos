@@ -70,7 +70,8 @@ class B2aDetectorConstruction : public G4VUserDetectorConstruction
     // data members
     G4int fNbOfChambers;
 
-    G4LogicalVolume*   fLogicTarget;     // pointer to the logical Target
+    G4LogicalVolume*   fLogicTarget;     // pointer to the logical Target#
+    G4LogicalVolume*   fLogicVertical;
     G4LogicalVolume**  fLogicChamber;    // pointer to the logical Chamber
 
     G4Material*        fTargetMaterial;  // pointer to the target  material

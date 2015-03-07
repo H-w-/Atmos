@@ -55,7 +55,7 @@ B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
     = G4ParticleTable::GetParticleTable()->FindParticle("proton");
 
   fParticleGun->SetParticleDefinition(particleDefinition);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
   fParticleGun->SetParticleEnergy(3.0*GeV);
 }
 
@@ -80,15 +80,15 @@ void B2PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4LogicalVolume* worldLV
     = G4LogicalVolumeStore::GetInstance()->GetVolume("World");
   G4Box* worldBox = NULL;
-  if ( worldLV ) worldBox = dynamic_cast<G4Box*>(worldLV->GetSolid());
+  if ( worldLV ) worldBox = dynamic_cast<G4Box*>(worldLV->GetSolid()); // not sure what this bit doe 
   if ( worldBox ) worldZHalfLength = worldBox->GetZHalfLength();
   else  {
     G4cerr << "World volume of box not found." << G4endl;
     G4cerr << "Perhaps you have changed geometry." << G4endl;
-    G4cerr << "The gun will be place in the center." << G4endl;
+    G4cerr << "The gun will be place in the center." << G4endl;        // to here
   }
 
-  fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., -worldZHalfLength));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0., 51*km, 0.));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }

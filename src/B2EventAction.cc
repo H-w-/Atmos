@@ -31,6 +31,7 @@
 #include "B2EventAction.hh"
 
 #include "G4Event.hh"
+#include "G4VHit.hh"
 #include "G4EventManager.hh"
 #include "G4TrajectoryContainer.hh"
 #include "G4Trajectory.hh"
@@ -83,6 +84,11 @@ void B2EventAction::EndOfEventAction(const G4Event* event)
     }
     G4cout << "    "  
            << hc->GetSize() << " hits stored in this event" << G4endl;
+
+    // print all hits stored in the event
+    for (int i = 0; i < hc->GetSize(); ++i) {
+      hc->GetHit(i)->Print(); 
+    }
   }
 }  
 

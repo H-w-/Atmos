@@ -73,7 +73,9 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
 {  
   // energy deposit
   G4double edep = aStep->GetTotalEnergyDeposit();
-
+  G4cout << "-----------------------------------------------------------" << G4endl;
+  G4cout << edep << G4endl;
+  G4cout << "-----------------------------------------------------------" << G4endl;
   if (edep==0.) return false;
 
   B2TrackerHit* newHit = new B2TrackerHit();

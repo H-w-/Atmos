@@ -141,7 +141,7 @@ void B2aDetectorConstruction::DefineMaterials()
   G4Material* air  = G4Material::GetMaterial("G4_AIR");
   
 
-  for (G4int i = 1; i < fNbOfChambers; i++){
+  for (G4int i = 0; i < fNbOfChambers; i++){
     G4double height = (i+1)*chamberSpacing; //remember the bottom half of world is -ve but this has to be +ve
     std::stringstream ss;
     ss << "name_" << i;

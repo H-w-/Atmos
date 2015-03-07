@@ -113,11 +113,11 @@ G4VPhysicalVolume* B2aDetectorConstruction::Construct()
   G4double target_y = 0.5*km; 
   G4double target_z = 5*km;
   G4ThreeVector target_pos = G4ThreeVector(0,-49.5*km,0);
-/*
+
   G4double vertical_x = 0.5*km;
   G4double vertical_y = 0.5*km;
   G4double vertical_z = 5*km;
-  G4ThreeVector vertical_pos = G4ThreeVector(0,-49.5*km,0);*/
+  G4ThreeVector vertical_pos = G4ThreeVector(0,-49.5*km,0);
 
   G4double tracker_x = 5*km;  
   G4double tracker_y = 50*km; //fNbofChmbers isn't working here don't know why
@@ -197,7 +197,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     fCheckOverlaps); // checking overlaps 
 
 
-/*    G4Box* verticalBox
+    G4Box* verticalBox
     = new G4Box("Vertical",vertical_x, vertical_y , vertical_z);
 
   fLogicVertical // the pointer bit is in header file, so it can be accesses form other .cc files
@@ -210,7 +210,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     worldLV,         // its mother volume
                     false,           // no boolean operations
                     0,               // copy number
-                    fCheckOverlaps); // checking overlaps */
+                    false); // checking overlaps 
 
 
   G4Box* trackerBox
@@ -228,12 +228,14 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   // Visualization attributes
 
-  G4VisAttributes* boxVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
-  G4VisAttributes* chamberVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,0.0));
+  G4VisAttributes* whiteVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
+  G4VisAttributes* yellowVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,0.0));
+  G4VisAttributes* redVisAtt = new G4VisAttributes(G4Colour(1.0,0.0,0.0));
 
-  worldLV      ->SetVisAttributes(boxVisAtt);
- // fLogicTarget ->SetVisAttributes(boxVisAtt);
-//  trackerLV    ->SetVisAttributes(boxVisAtt);
+  worldLV      ->SetVisAttributes(whiteVisAtt);
+  fLogicTarget ->SetVisAttributes(whiteVisAtt);
+  trackerLV    ->SetVisAttributes(whiteVisAtt);
+  fLogicVertical ->SetVisAttributes(redVisAtt); 
 
 
 
@@ -248,7 +250,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
       fLogicChamber[copyNo] =
               new G4LogicalVolume(chamberBox,fChamberMaterials[copyNo],"Chamber_LV",0,0,0);
 
-      fLogicChamber[copyNo]->SetVisAttributes(chamberVisAtt);
+      fLogicChamber[copyNo]->SetVisAttributes(yellowVisAtt);
 
       new G4PVPlacement(0,                            // no rotation
                         G4ThreeVector(0,Yposition,0), // at (x,y,z)

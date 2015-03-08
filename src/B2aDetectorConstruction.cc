@@ -68,30 +68,30 @@ G4GlobalMagFieldMessenger* B2aDetectorConstruction::fMagFieldMessenger = 0;
 G4double scale_h = 8.4*km;
 G4double layer_y = scale_h/20;
 
-G4double chamber_x = 5*km;
+G4double chamber_x = 10*km;
 G4double chamber_y = layer_y;
-G4double chamber_z = 5*km;
+G4double chamber_z = 10*km;
 G4double chamberSpacing = chamber_y*2; // from chamber center to center!
 G4double firstPosition = -48.5*km;
 G4int nbChambers = 100*km/(layer_y*2) - 1;
 
-G4double target_x = 5*km;
+G4double target_x = 10*km;
 G4double target_y = layer_y; 
-G4double target_z = 5*km;
+G4double target_z = 10*km;
 G4ThreeVector target_pos = G4ThreeVector(0,-49.5*km,0);
 
-G4double vertical_x = 5*km;
+G4double vertical_x = 10*km;
 G4double vertical_y = layer_y;
 G4double vertical_z = 0.5*km;
 G4ThreeVector vertical_pos = G4ThreeVector(0,-49.5*km,0);
 
-G4double tracker_x = 5*km;  
+G4double tracker_x = 10*km;  
 G4double tracker_y = 50*km; //fNbofChmbers isn't working here don't know why
-G4double tracker_z = 5*km;
+G4double tracker_z = 10*km;
 
-G4double world_x = 5.5*km;
+G4double world_x = 10.5*km;
 G4double world_y = 51*km;
-G4double world_z = 5.5*km;
+G4double world_z = 10.5*km;
 
 
 B2aDetectorConstruction::B2aDetectorConstruction()

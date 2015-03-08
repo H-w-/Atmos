@@ -84,6 +84,20 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
   newHit->SetEdep(edep);
   newHit->SetPos (aStep->GetPostStepPoint()->GetPosition());
 
+  G4cout << aStep->GetTrack()->GetParticleDefinition()->GetParticleName() 
+      << " " << aStep->GetTrack()->GetParticleDefinition()->GetInstanceID()
+      << " " << aStep->GetTrack()->GetKineticEnergy() << G4endl;
+
+  // kinetic energy
+  aStep->GetTrack()->GetKineticEnergy(); //G4double
+  // momentum vector
+  aStep->GetTrack()->GetMomentumDirection(); // G4ThreeVector
+  aStep->GetTrack()->GetMomentum(); // G4ThreeVector
+  aStep->GetTrack()->GetVelocity(); // G4double
+
+  // secondaries
+  aStep->GetSecondaryInCurrentStep(); // std::vector<const G4Track*>*
+
   fHitsCollection->insert( newHit );
 
   //newHit->Print();

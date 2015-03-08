@@ -213,7 +213,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   fLogicVertical // the pointer bit is in header file, so it can be accesses form other .cc files
     = new G4LogicalVolume(verticalBox, air,"Vertical",0,0,0);
-
+/*
   new G4PVPlacement(0,               // no rotation
                     vertical_pos,  // at (x,y,z)
                     fLogicVertical,    // its logical volume
@@ -222,13 +222,13 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     false,           // no boolean operations
                     0,               // copy number
                     false); // checking overlaps 
-
+*/
 
   G4Box* trackerBox
     = new G4Box("Tracker",tracker_x,tracker_y,tracker_z);
   G4LogicalVolume* trackerLV
     = new G4LogicalVolume(trackerBox, air, "Tracker",0,0,0);  
-  new G4PVPlacement(0,               // no rotation
+  /*new G4PVPlacement(0,               // no rotation
                     G4ThreeVector(), // at (x,y,z)
                     trackerLV,       // its logical volume
                     "Tracker",       // its name
@@ -236,7 +236,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     false,           // no boolean operations
                     0,               // copy number
                     fCheckOverlaps); // checking overlaps 
-
+*/
   // Visualization attributes
 
   G4VisAttributes* whiteVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));

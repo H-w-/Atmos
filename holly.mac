@@ -1,4 +1,4 @@
 # cast 1 beam
 /run/initialize
-/random/setSeeds 2454 54
-/run/beamOn 10
+#/random/setSeeds 2454 54
+/run/beamOn 100

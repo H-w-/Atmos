@@ -66,8 +66,7 @@ void B2EventAction::EndOfEventAction(const G4Event* event)
   // periodic printing
 
   G4int eventID = event->GetEventID();
-   G4cout << "Hello im running the event handler" << G4endl;
-
+   
   if (event == 0) {
     G4cout << "EVENT  0" << G4endl;
   }
@@ -86,9 +85,9 @@ void B2EventAction::EndOfEventAction(const G4Event* event)
            << hc->GetSize() << " hits stored in this event" << G4endl;
 
     // print all hits stored in the event
-    for (int i = 0; i < hc->GetSize(); ++i) {
+/*    for (unsigned int i = 0; i < hc->GetSize(); ++i) {
       hc->GetHit(i)->Print(); 
-    }
+    }*/
   }
 }  
 

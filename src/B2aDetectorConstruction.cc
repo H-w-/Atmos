@@ -93,6 +93,7 @@ G4double world_x = 10.5*km;
 G4double world_y = 51*km;
 G4double world_z = 10.5*km;
 
+G4double maxStep = 0.5*chamber_x;
 
 B2aDetectorConstruction::B2aDetectorConstruction()
 :G4VUserDetectorConstruction(), 
@@ -208,11 +209,11 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     fCheckOverlaps); // checking overlaps 
 
 
-    G4Box* verticalBox
+    /*G4Box* verticalBox
     = new G4Box("Vertical",vertical_x, vertical_y , vertical_z);
 
   fLogicVertical // the pointer bit is in header file, so it can be accesses form other .cc files
-    = new G4LogicalVolume(verticalBox, air,"Vertical",0,0,0);
+    = new G4LogicalVolume(verticalBox, air,"Vertical",0,0,0);*/
 /*
   new G4PVPlacement(0,               // no rotation
                     vertical_pos,  // at (x,y,z)
@@ -224,10 +225,10 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     false); // checking overlaps 
 */
 
-  G4Box* trackerBox
+  /*G4Box* trackerBox
     = new G4Box("Tracker",tracker_x,tracker_y,tracker_z);
   G4LogicalVolume* trackerLV
-    = new G4LogicalVolume(trackerBox, air, "Tracker",0,0,0);  
+    = new G4LogicalVolume(trackerBox, air, "Tracker",0,0,0);  */
   /*new G4PVPlacement(0,               // no rotation
                     G4ThreeVector(), // at (x,y,z)
                     trackerLV,       // its logical volume
@@ -240,14 +241,23 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
   // Visualization attributes
 
   G4VisAttributes* whiteVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
-  G4VisAttributes* yellowVisAtt = new G4VisAttributes(G4Colour(1.0,1.0,0.0));
+  G4VisAttributes* yellowVisAtt = new G4VisAttributes(G4Colour(1.0,0.8,0.2));
   G4VisAttributes* redVisAtt = new G4VisAttributes(G4Colour(1.0,0.0,0.0));
 
   worldLV      ->SetVisAttributes(whiteVisAtt);
-  fLogicTarget ->SetVisAttributes(whiteVisAtt);
-  trackerLV    ->SetVisAttributes(whiteVisAtt);
-  fLogicVertical ->SetVisAttributes(redVisAtt); 
+  fLogicTarget ->SetVisAttributes(redVisAtt);
+/*  trackerLV    ->SetVisAttributes(whiteVisAtt);
+  fLogicVertical ->SetVisAttributes(redVisAtt); */
 
+
+  // Example of User Limits
+  //
+  // Below is an example of how to set tracking constraints in a given
+  // logical volume
+  //
+  // Sets a max step length in the tracker region, with G4StepLimiter
+  fStepLimit = new G4UserLimits(maxStep);
+  //fLogicTarget->SetUserLimits(fStepLimit);
 
 
   for (G4int copyNo=0; copyNo<fNbOfChambers; copyNo++) {
@@ -262,6 +272,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
               new G4LogicalVolume(chamberBox,fChamberMaterials[copyNo],"Chamber_LV",0,0,0);
 
       fLogicChamber[copyNo]->SetVisAttributes(yellowVisAtt);
+      //fLogicChamber[copyNo]->SetUserLimits(fStepLimit);
 
       new G4PVPlacement(0,                            // no rotation
                         G4ThreeVector(0,Yposition,0), // at (x,y,z)
@@ -274,16 +285,6 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 
   }
 
-  // Example of User Limits
-  //
-  // Below is an example of how to set tracking constraints in a given
-  // logical volume
-  //
-  // Sets a max step length in the tracker region, with G4StepLimiter
-
-  G4double maxStep = 0.5*chamber_x;
-  fStepLimit = new G4UserLimits(maxStep);
-//  trackerLV->SetUserLimits(fStepLimit);
  
   // Always return the physical world
 
@@ -344,7 +345,7 @@ void B2aDetectorConstruction::SetTargetMaterial(G4String materialName)
 
 void B2aDetectorConstruction::SetChamberMaterial(G4String materialName)
 {
-  G4cout << "DO NOT USE THIS!" << G4endl;
+  G4cout << materialName <<"DO NOT USE THIS!" << G4endl;
   /*G4NistManager* nistManager = G4NistManager::Instance();
 
   G4Material* pttoMaterial =
@@ -371,9 +372,9 @@ void B2aDetectorConstruction::SetChamberMaterial(G4String materialName)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void B2aDetectorConstruction::SetMaxStep(G4double maxStep)
+void B2aDetectorConstruction::SetMaxStep(G4double _maxStep)
 {
-  if ((fStepLimit)&&(maxStep>0.)) fStepLimit->SetMaxAllowedStep(maxStep);
+  if ((fStepLimit)&&(_maxStep>0.)) fStepLimit->SetMaxAllowedStep(_maxStep);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

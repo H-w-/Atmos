@@ -84,9 +84,13 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
   newHit->SetEdep(edep);
   newHit->SetPos (aStep->GetPostStepPoint()->GetPosition());
 
-  G4cout << aStep->GetTrack()->GetParticleDefinition()->GetParticleName() 
-      << " " << aStep->GetTrack()->GetParticleDefinition()->GetInstanceID()
-      << " " << aStep->GetTrack()->GetKineticEnergy() << G4endl;
+  G4String name = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
+  if ("neutron" == name) {
+    G4cout << name
+        << " " << aStep->GetTrack()->GetParticleDefinition()->GetInstanceID()
+        << " " << aStep->GetTrack()->GetKineticEnergy() << G4endl;
+    fHitsCollection->insert( newHit );
+  }
 
   // kinetic energy
   aStep->GetTrack()->GetKineticEnergy(); //G4double
@@ -98,7 +102,7 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
   // secondaries
   aStep->GetSecondaryInCurrentStep(); // std::vector<const G4Track*>*
 
-  fHitsCollection->insert( newHit );
+  
 
   //newHit->Print();
 

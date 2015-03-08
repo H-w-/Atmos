@@ -301,7 +301,8 @@ void B2aDetectorConstruction::ConstructSDandField()
                                             "TrackerHitsCollection");
   // Setting aTrackerSD to all logical volumes with the same name 
   // of "Chamber_LV".
-  SetSensitiveDetector("Chamber_LV", aTrackerSD, true);
+  //SetSensitiveDetector("Chamber_LV", aTrackerSD, true);
+  SetSensitiveDetector("Target", aTrackerSD, true);
 
   // Create global magnetic field messenger.
   // Uniform magnetic field is then created automatically if

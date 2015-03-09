@@ -36,6 +36,8 @@
 #include "G4VisAttributes.hh"
 
 #include <iomanip>
+#include <sstream>
+#include <cstring>
 
 G4ThreadLocal G4Allocator<B2TrackerHit>* B2TrackerHitAllocator=0;
 
@@ -46,7 +48,12 @@ B2TrackerHit::B2TrackerHit()
    fTrackID(-1),
    fChamberNb(-1),
    fEdep(0.),
-   fPos(G4ThreeVector())
+   fPos(G4ThreeVector()),
+   fKineticEnergy(-1),
+   fMomentumDirection(G4ThreeVector()),
+   fVelocity(-1),
+   fMomentum(G4ThreeVector()),
+   fTotalEnergy(-1)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -62,6 +69,11 @@ B2TrackerHit::B2TrackerHit(const B2TrackerHit& right)
   fChamberNb = right.fChamberNb;
   fEdep      = right.fEdep;
   fPos       = right.fPos;
+  fMomentumDirection = right.fMomentumDirection;
+  fMomentum = right.fMomentum;
+  fVelocity = right.fVelocity;
+  fTotalEnergy = right.fTotalEnergy;
+  fKineticEnergy = right.fKineticEnergy;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -105,12 +117,31 @@ void B2TrackerHit::Draw()
 void B2TrackerHit::Print()
 {
   G4cout
-     << "  trackID: " << fTrackID << " chamberNb: " << fChamberNb
-     << "Edep: "
-     << std::setw(7) << G4BestUnit(fEdep,"Energy")
-     << " Position: "
-     << std::setw(7) << G4BestUnit( fPos,"Length")
+     << "  trackID: " << fTrackID 
+     << " chamberNb: " << fChamberNb
+     << "Edep: " << std::setw(7) << G4BestUnit(fEdep,"Energy")
+     << " Position: " << std::setw(7) << G4BestUnit( fPos,"Length")
+     << " KE: " << G4BestUnit( fEdep, "Energy")
+     << " Momentum:" << G4BestUnit( fMomentum, "Momentum")
+     << " MomentumDirection:" << G4BestUnit( fMomentumDirection, "MomentumDirection")
+     << " Velocity: " << G4BestUnit( fVelocity, "Velocity")
+     << " Total Energy: " << G4BestUnit (fTotalEnergy, "TotalEnergy") 
      << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+std::string B2TrackerHit::ToString()
+{
+  std::stringstream ss;
+  ss
+  << "  trackID: " << fTrackID 
+  << " chamberNb: " << fChamberNb
+  << " Edep: " << std::setw(7) << G4BestUnit(fEdep,"Energy")
+  << " Position: " << std::setw(7) << G4BestUnit( fPos,"Length")
+  << " KE: " << G4BestUnit( fEdep, "Energy")
+  << " Momentum:" << G4BestUnit( fMomentum, "Momentum")
+  << " MomentumDirection:" << G4BestUnit( fMomentumDirection, "MomentumDirection")
+  << " Velocity: " << G4BestUnit( fVelocity, "Velocity")
+  << " Total Energy: " << G4BestUnit (fTotalEnergy, "TotalEnergy");
+  return ss.str(); 
+}

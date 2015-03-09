@@ -37,6 +37,8 @@
 #include "G4ThreeVector.hh"
 #include "tls.hh"
 
+#include <cstring>
+
 /// Tracker hit class
 ///
 /// It defines data members to store the trackID, chamberNb, energy deposit,
@@ -61,17 +63,36 @@ class B2TrackerHit : public G4VHit
     virtual void Draw();
     virtual void Print();
 
+    // conversion to string
+
+    std::string ToString();
+
     // Set methods
     void SetTrackID  (G4int track)      { fTrackID = track; };
     void SetChamberNb(G4int chamb)      { fChamberNb = chamb; };
     void SetEdep     (G4double de)      { fEdep = de; };
     void SetPos      (G4ThreeVector xyz){ fPos = xyz; };
+    void SetKineticEnergy (G4double aValue) {  fKineticEnergy = aValue; };
+    void SetMomentumDirection(const G4ThreeVector& aValue) {fMomentumDirection = aValue; };
+    void SetVelocity(G4double val) { fVelocity = val; };
+    void SetMomentum(const G4ThreeVector &mom) { fMomentum = mom; }; //this right?
+    void SetTotalEnergy(G4double teng) { fTotalEnergy = teng; };
+
+
 
     // Get methods
     G4int GetTrackID() const     { return fTrackID; };
     G4int GetChamberNb() const   { return fChamberNb; };
     G4double GetEdep() const     { return fEdep; };
     G4ThreeVector GetPos() const { return fPos; };
+    G4double GetKineticEnergy() const { return fKineticEnergy; };
+    const G4ThreeVector& GetMomentumDirection() const { return fMomentumDirection; };
+    G4double GetVelocity() const { return fVelocity; };
+    const G4ThreeVector& GetMomentum() const { return fMomentum; }; // what do for these twono void in track
+    G4double GetTotalEnergy() const { return fTotalEnergy; };
+
+
+
 
   private:
 
@@ -79,6 +100,12 @@ class B2TrackerHit : public G4VHit
       G4int         fChamberNb;
       G4double      fEdep;
       G4ThreeVector fPos;
+      G4double fKineticEnergy;
+      G4ThreeVector fMomentumDirection; //need and here?
+      G4double fVelocity;
+      G4ThreeVector fMomentum;
+      G4double fTotalEnergy;
+
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

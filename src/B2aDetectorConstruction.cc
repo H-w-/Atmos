@@ -256,7 +256,7 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
   // logical volume
   //
   // Sets a max step length in the tracker region, with G4StepLimiter
-  fStepLimit = new G4UserLimits(maxStep);
+  fStepLimit = new G4UserLimits(DBL_MAX, DBL_MAX, DBL_MAX);
   //fLogicTarget->SetUserLimits(fStepLimit);
 
 
@@ -302,7 +302,7 @@ void B2aDetectorConstruction::ConstructSDandField()
                                             "TrackerHitsCollection");
   // Setting aTrackerSD to all logical volumes with the same name 
   // of "Chamber_LV".
-  //SetSensitiveDetector("Chamber_LV", aTrackerSD, true);
+  SetSensitiveDetector("Chamber_LV", aTrackerSD, true);
   SetSensitiveDetector("Target", aTrackerSD, true);
 
   // Create global magnetic field messenger.

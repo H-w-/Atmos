@@ -46,7 +46,7 @@
 B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
  : G4VUserPrimaryGeneratorAction()
 {
-  G4int nofParticles = 1;
+  G4int nofParticles = 1000;
   fParticleGun = new G4ParticleGun(nofParticles);
 
   // default particle kinematic
@@ -56,7 +56,7 @@ B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
 
   fParticleGun->SetParticleDefinition(particleDefinition);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
-  fParticleGun->SetParticleEnergy(300.0*GeV);
+  fParticleGun->SetParticleEnergy(30*GeV);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

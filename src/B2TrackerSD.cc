@@ -71,18 +71,13 @@ void B2TrackerSD::Initialize(G4HCofThisEvent* hce)
 G4bool B2TrackerSD::ProcessHits(G4Step* aStep, 
                                      G4TouchableHistory*)
 {  
+
+
   // energy deposit
   G4double edep = aStep->GetTotalEnergyDeposit();
 
-  if (edep==0.) return false;
+  //if (edep==0.) return false;
 
-  B2TrackerHit* newHit = new B2TrackerHit();
-
-  newHit->SetTrackID  (aStep->GetTrack()->GetTrackID());
-  newHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchableHandle()
-                                               ->GetCopyNumber());
-  newHit->SetEdep(edep);
-  newHit->SetPos (aStep->GetPostStepPoint()->GetPosition());
 
   G4String name = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
   // if a particle is unseen so far -- register
@@ -92,11 +87,24 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
   else
     ++particles[name];
 
+
   if ("neutron" == name) {
-    G4cout << name
-        << " " << aStep->GetTrack()->GetParticleDefinition()->GetInstanceID()
-        << " " << aStep->GetTrack()->GetKineticEnergy() << G4endl;
-    fHitsCollection->insert( newHit );
+    // only store hits on target
+    if ("Target" == aStep->GetTrack()->GetLogicalVolumeAtVertex()->GetName()) {
+      B2TrackerHit* newHit = new B2TrackerHit();
+
+      newHit->SetTrackID  (aStep->GetTrack()->GetTrackID());
+      newHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchableHandle()
+                                                   ->GetCopyNumber());
+      newHit->SetEdep(edep);
+      newHit->SetPos (aStep->GetPostStepPoint()->GetPosition());
+      // G4cout << name
+      //     << " " << aStep->GetTrack()->GetParticleDefinition()->GetInstanceID()
+      //     << " " << aStep->GetTrack()->GetKineticEnergy() << G4endl;
+      fHitsCollection->insert( newHit );
+    }
+  } else if ("proton" != name) {
+    aStep->GetTrack()->SetTrackStatus(fStopAndKill);
   }
 
   // kinetic energy
@@ -107,7 +115,18 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
   aStep->GetTrack()->GetVelocity(); // G4double
 
   // secondaries
-  aStep->GetSecondaryInCurrentStep(); // std::vector<const G4Track*>*
+  // const std::vector<const G4Track*>* secondaries = aStep->GetSecondaryInCurrentStep(); // std::vector<const G4Track*>*
+  // std::vector<const G4Track*>::const_iterator it = secondaries->begin();
+  // for (; it != secondaries->end(); ++it) {
+  //   if ((*it)->GetParticleDefinition()->GetParticleName() == "neutron") {
+  //     G4cout << "FOR FUCKS SAKE " 
+  //         << (*it)->GetKineticEnergy() 
+  //         << " " << (*it)->GetParticleDefinition()->GetPDGStable() 
+  //         << " " << (*it)->GetParticleDefinition()->IsShortLived() 
+  //         << " " << (*it)->GetParticleDefinition()->GetParticleType() 
+  //         << G4endl;
+  //   }
+  // }
 
   
 

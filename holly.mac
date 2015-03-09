@@ -1,4 +1,5 @@
 # cast 1 beam
+#/cuts/setLowEdge 1 eV
 /run/initialize
-#/random/setSeeds 2454 54
-/run/beamOn 100
+#/random/setSeeds 2454 543
+/run/beamOn 1

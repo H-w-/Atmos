@@ -121,7 +121,7 @@ void B2TrackerHit::Print()
      << " chamberNb: " << fChamberNb
      << "Edep: " << std::setw(7) << G4BestUnit(fEdep,"Energy")
      << " Position: " << std::setw(7) << G4BestUnit( fPos,"Length")
-     << " KE: " << G4BestUnit( fEdep, "Energy")
+     << " KE: " << G4BestUnit( fKineticEnergy, "Energy")
      << " Momentum:" << fMomentum
      << " MomentumDirection:" << fMomentumDirection
      << " Velocity: " << fVelocity
@@ -129,19 +129,24 @@ void B2TrackerHit::Print()
      << G4endl;
 }
 
+//G4double MD_x = fMomentumDirection.x; 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-std::string B2TrackerHit::ToString()
+std::string B2TrackerHit::ToString() // need to sort out vectors
 {
   std::stringstream ss;
   ss
-  << "  trackID: " << fTrackID 
-  << " chamberNb: " << fChamberNb
-  << " Edep: " << std::setw(7) << G4BestUnit(fEdep,"Energy")
-  << " Position: " << std::setw(7) << G4BestUnit( fPos,"Length")
-  << " KE: " << G4BestUnit( fEdep, "Energy")
-  << " Momentum:" << fMomentum
-  << " MomentumDirection:" << fMomentumDirection
-  << " Velocity: " << fVelocity
-  << " Total Energy: " << G4BestUnit(fTotalEnergy, "Energy");
+  << fEdep<< ","
+  << fPos.x()<< ","
+  << fPos.y()<< ","
+  << fPos.z()<< ","
+  << fKineticEnergy << ","
+  << fMomentum.x() << ","
+  << fMomentum.y() << ","
+  << fMomentum.z() << ","
+  << fMomentumDirection.x() << ","
+  << fMomentumDirection.y() << ","
+  << fMomentumDirection.z() << ","
+  << fVelocity << ","
+  << fTotalEnergy;
   return ss.str(); 
 }

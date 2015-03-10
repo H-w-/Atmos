@@ -100,7 +100,7 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
                                                    ->GetCopyNumber());
       newHit->SetEdep(edep);
       newHit->SetPos (aStep->GetPostStepPoint()->GetPosition());
-      aStep->GetTrack()->GetKineticEnergy(); //G4double
+      newHit ->SetKineticEnergy (aStep->GetTrack()->GetKineticEnergy()); //G4double
       newHit->SetMomentumDirection (aStep->GetTrack()->GetMomentumDirection()); // G4ThreeVector
       newHit->SetMomentum (aStep->GetTrack()->GetMomentum()); // G4ThreeVector
       newHit->SetVelocity (aStep->GetTrack()->GetVelocity()); // G4double

@@ -153,7 +153,6 @@ B2aDetectorConstruction::~B2aDetectorConstruction()
   delete [] fLogicChamber; 
   delete fStepLimit;
   delete fMessenger;
-  G4cout << "layer_y " << layer_y << "  firstPosition " << firstPosition << " target_pos " << target_pos << G4endl;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

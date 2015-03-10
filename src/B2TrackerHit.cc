@@ -122,10 +122,10 @@ void B2TrackerHit::Print()
      << "Edep: " << std::setw(7) << G4BestUnit(fEdep,"Energy")
      << " Position: " << std::setw(7) << G4BestUnit( fPos,"Length")
      << " KE: " << G4BestUnit( fEdep, "Energy")
-     << " Momentum:" << G4BestUnit( fMomentum, "Momentum")
-     << " MomentumDirection:" << G4BestUnit( fMomentumDirection, "MomentumDirection")
-     << " Velocity: " << G4BestUnit( fVelocity, "Velocity")
-     << " Total Energy: " << G4BestUnit (fTotalEnergy, "TotalEnergy") 
+     << " Momentum:" << fMomentum
+     << " MomentumDirection:" << fMomentumDirection
+     << " Velocity: " << fVelocity
+     << " Total Energy: " << G4BestUnit(fTotalEnergy, "Energy")
      << G4endl;
 }
 
@@ -139,9 +139,9 @@ std::string B2TrackerHit::ToString()
   << " Edep: " << std::setw(7) << G4BestUnit(fEdep,"Energy")
   << " Position: " << std::setw(7) << G4BestUnit( fPos,"Length")
   << " KE: " << G4BestUnit( fEdep, "Energy")
-  << " Momentum:" << G4BestUnit( fMomentum, "Momentum")
-  << " MomentumDirection:" << G4BestUnit( fMomentumDirection, "MomentumDirection")
-  << " Velocity: " << G4BestUnit( fVelocity, "Velocity")
-  << " Total Energy: " << G4BestUnit (fTotalEnergy, "TotalEnergy");
+  << " Momentum:" << fMomentum
+  << " MomentumDirection:" << fMomentumDirection
+  << " Velocity: " << fVelocity
+  << " Total Energy: " << G4BestUnit(fTotalEnergy, "Energy");
   return ss.str(); 
 }

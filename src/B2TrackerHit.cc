@@ -78,7 +78,7 @@ B2TrackerHit::B2TrackerHit(const B2TrackerHit& right)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-const B2TrackerHit& B2TrackerHit::operator=(const B2TrackerHit& right)
+const B2TrackerHit& B2TrackerHit::operator=(const B2TrackerHit& right) //what does this do should I change this
 {
   fTrackID   = right.fTrackID;
   fChamberNb = right.fChamberNb;

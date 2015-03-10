@@ -2,4 +2,5 @@
 #/cuts/setLowEdge 1 eV
 /run/initialize
 #/random/setSeeds 2454 543
+/random/setSeeds 123 25
 /run/beamOn 1

@@ -64,6 +64,8 @@
 G4ThreadLocal 
 G4GlobalMagFieldMessenger* B2aDetectorConstruction::fMagFieldMessenger = 0;
 
+#define TEST_RUN
+#ifndef TEST_RUN
 
 G4double scale_h = 8.4*km;
 G4double layer_y = scale_h/20;
@@ -72,13 +74,13 @@ G4double chamber_x = 10*km;
 G4double chamber_y = layer_y;
 G4double chamber_z = 10*km;
 G4double chamberSpacing = chamber_y*2; // from chamber center to center!
-G4double firstPosition = -49.9995*km+layer_y;
+G4double firstPosition = -48.5*km;
 G4int nbChambers = 100*km/(layer_y*2) - 1;
 
 G4double target_x = 10*km;
-G4double target_y = 0.5*m; 
+G4double target_y = layer_y; 
 G4double target_z = 10*km;
-G4ThreeVector target_pos = G4ThreeVector(0,-49.9995*km,0);
+G4ThreeVector target_pos = G4ThreeVector(0,-49.5*km,0);
 
 G4double vertical_x = 10*km;
 G4double vertical_y = layer_y;
@@ -94,6 +96,40 @@ G4double world_y = 51*km;
 G4double world_z = 10.5*km;
 
 G4double maxStep = 0.5*chamber_x;
+
+#else
+
+G4double scale_h = 8.4*km;
+G4double layer_y = 1*m;
+
+G4double chamber_x = 30*m;
+G4double chamber_y = layer_y;
+G4double chamber_z = 30*m;
+G4double chamberSpacing = chamber_y*2; // from chamber center to center!
+G4double firstPosition = -98*m;
+G4int nbChambers = 99;
+
+G4double target_x = 30*m;
+G4double target_y = layer_y; 
+G4double target_z = 30*m;
+G4ThreeVector target_pos = G4ThreeVector(0,-99*m,0);
+
+G4double vertical_x = 10*km;
+G4double vertical_y = layer_y;
+G4double vertical_z = 0.5*km;
+G4ThreeVector vertical_pos = G4ThreeVector(0,-49.5*km,0);
+
+G4double tracker_x = 10*km;  
+G4double tracker_y = 50*km; //fNbofChmbers isn't working here don't know why
+G4double tracker_z = 10*km;
+
+G4double world_x = 30.5*m;
+G4double world_y = 100*m;
+G4double world_z = 30.5*m;
+
+G4double maxStep = 0.5*chamber_x;
+
+#endif
 
 B2aDetectorConstruction::B2aDetectorConstruction()
 :G4VUserDetectorConstruction(), 
@@ -158,9 +194,7 @@ void B2aDetectorConstruction::DefineMaterials()
     G4String name = ss.str(); 
     G4double density = (exp(-height/scale_h)) * density_air;
     fChamberMaterials[i] = new G4Material(name, density, air);
-    fw << std::setw(10) << name 
-        << "| height (km) - "     << std::setw(10) << std::fixed << std::setprecision(2) << height/1000000 
-        << "| density fraction - " << std::setw(10) << std::scientific << std::setprecision(4) << density/density_air << G4endl;
+    fw  << height/1000000 << "," << density/density_air << G4endl;
     nistManager->FindOrBuildMaterial(name);
   }
   fw.close();

@@ -46,7 +46,7 @@
 B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
  : G4VUserPrimaryGeneratorAction()
 {
-  G4int nofParticles = 1000;
+  G4int nofParticles = 100;
   fParticleGun = new G4ParticleGun(nofParticles);
 
   // default particle kinematic
@@ -56,7 +56,7 @@ B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
 
   fParticleGun->SetParticleDefinition(particleDefinition);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
-  fParticleGun->SetParticleEnergy(30*GeV);
+  fParticleGun->SetParticleEnergy(200*MeV);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -88,7 +88,7 @@ void B2PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     G4cerr << "The gun will be place in the center." << G4endl;        // to here
   }
 
-  fParticleGun->SetParticlePosition(G4ThreeVector(0., 51*km, 0.));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0., 100*m, 0.));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }

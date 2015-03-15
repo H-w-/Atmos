@@ -36,6 +36,8 @@
 #include "G4VisAttributes.hh"
 
 #include <iomanip>
+#include <sstream>
+#include <cstring>
 
 G4ThreadLocal G4Allocator<B2TrackerHit>* B2TrackerHitAllocator=0;
 
@@ -46,7 +48,12 @@ B2TrackerHit::B2TrackerHit()
    fTrackID(-1),
    fChamberNb(-1),
    fEdep(0.),
-   fPos(G4ThreeVector())
+   fPos(G4ThreeVector()),
+   fKineticEnergy(-1),
+   fMomentumDirection(G4ThreeVector()),
+   fVelocity(-1),
+   fMomentum(G4ThreeVector()),
+   fTotalEnergy(-1)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -62,11 +69,16 @@ B2TrackerHit::B2TrackerHit(const B2TrackerHit& right)
   fChamberNb = right.fChamberNb;
   fEdep      = right.fEdep;
   fPos       = right.fPos;
+  fMomentumDirection = right.fMomentumDirection;
+  fMomentum = right.fMomentum;
+  fVelocity = right.fVelocity;
+  fTotalEnergy = right.fTotalEnergy;
+  fKineticEnergy = right.fKineticEnergy;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-const B2TrackerHit& B2TrackerHit::operator=(const B2TrackerHit& right)
+const B2TrackerHit& B2TrackerHit::operator=(const B2TrackerHit& right) //what does this do should I change this
 {
   fTrackID   = right.fTrackID;
   fChamberNb = right.fChamberNb;
@@ -105,12 +117,36 @@ void B2TrackerHit::Draw()
 void B2TrackerHit::Print()
 {
   G4cout
-     << "  trackID: " << fTrackID << " chamberNb: " << fChamberNb
-     << "Edep: "
-     << std::setw(7) << G4BestUnit(fEdep,"Energy")
-     << " Position: "
-     << std::setw(7) << G4BestUnit( fPos,"Length")
+     << "  trackID: " << fTrackID 
+     << " chamberNb: " << fChamberNb
+     << "Edep: " << std::setw(7) << G4BestUnit(fEdep,"Energy")
+     << " Position: " << std::setw(7) << G4BestUnit( fPos,"Length")
+     << " KE: " << G4BestUnit( fKineticEnergy, "Energy")
+     << " Momentum:" << fMomentum
+     << " MomentumDirection:" << fMomentumDirection
+     << " Velocity: " << fVelocity
+     << " Total Energy: " << G4BestUnit(fTotalEnergy, "Energy")
      << G4endl;
 }
 
+//G4double MD_x = fMomentumDirection.x; 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+std::string B2TrackerHit::ToString() // need to sort out vectors
+{
+  std::stringstream ss;
+  ss
+  << fEdep<< ","
+  << fPos.x()<< ","
+  << fPos.y()<< ","
+  << fPos.z()<< ","
+  << fKineticEnergy << ","
+  << fMomentum.x() << ","
+  << fMomentum.y() << ","
+  << fMomentum.z() << ","
+  << fMomentumDirection.x() << ","
+  << fMomentumDirection.y() << ","
+  << fMomentumDirection.z() << ","
+  << fVelocity << ","
+  << fTotalEnergy;
+  return ss.str(); 
+}

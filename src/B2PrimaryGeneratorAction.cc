@@ -54,7 +54,8 @@
 B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
  : G4VUserPrimaryGeneratorAction()
 {
-  G4int nofParticles = 1;
+  G4int nofParticles = 10;
+
   fParticleGun = new G4ParticleGun(nofParticles);
 
   // default particle kinematic
@@ -95,6 +96,7 @@ std::ofstream fw("protonin.txt", std::ios::out);
   fw.close();
 
   fParticleGun->SetParticleEnergy(nd);
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -130,7 +132,7 @@ void B2PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     G4cerr << "The gun will be place in the center." << G4endl;
   }
 
-  fParticleGun->SetParticlePosition(G4ThreeVector(0., 51*km, 0.));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0., 50*km, 0.));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }

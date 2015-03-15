@@ -64,7 +64,7 @@
 G4ThreadLocal 
 G4GlobalMagFieldMessenger* B2aDetectorConstruction::fMagFieldMessenger = 0;
 
-#define TEST_RUN
+//#define TEST_RUN
 #ifndef TEST_RUN
 
 G4double scale_h = 8.4*km;

@@ -146,7 +146,7 @@ void B2TrackerSD::EndOfEvent(G4HCofThisEvent*)
   G4cout << G4endl
         << "-------->Hits Collection: in this event they are " << nofHits 
         << " hits in the tracker chambers: " << G4endl;
-  std::ofstream fw("hits.txt"); // open a file
+  std::ofstream fw("hits.txt",std::ofstream::app); // open a file
   for ( G4int i=0; i<nofHits; i++ ) {
     fw << ((B2TrackerHit *)(*fHitsCollection)[i])->ToString() << std::endl;
   }

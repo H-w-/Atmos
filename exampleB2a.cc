@@ -30,6 +30,7 @@
 
 #include "B2aDetectorConstruction.hh"
 #include "B2ActionInitialization.hh"
+#include "ExN04StackingAction.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -88,6 +89,14 @@ int main(int argc,char** argv)
 
   // Get the pointer to the User Interface manager
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
+
+  // Explicitly initialise runManager
+  runManager->Initialize();
+
+  // User Action classes
+  //
+  G4UserStackingAction* stacking_action = new ExN04StackingAction;
+  runManager->SetUserAction(stacking_action);
 
   // Process macro or start UI session
   //

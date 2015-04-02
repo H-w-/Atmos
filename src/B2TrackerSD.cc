@@ -110,12 +110,7 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
       //     << " " << aStep->GetTrack()->GetKineticEnergy() << G4endl;
       fHitsCollection->insert( newHit );
     }
-  } else if ("proton" != name) {
-    aStep->GetTrack()->SetTrackStatus(fStopAndKill);
-    }
-
-
-
+  }
 
   // secondaries
   // const std::vector<const G4Track*>* secondaries = aStep->GetSecondaryInCurrentStep(); // std::vector<const G4Track*>*

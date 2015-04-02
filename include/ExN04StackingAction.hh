@@ -41,13 +41,13 @@ class G4Track;
 class ExN04StackingAction : public G4UserStackingAction
 {
   public:
-    ExN04StackingAction();
-    virtual ~ExN04StackingAction();
+    ExN04StackingAction() {}
+    virtual ~ExN04StackingAction() {}
 
   public:
     virtual G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track* aTrack);
-    virtual void NewStage();
-    virtual void PrepareNewEvent();
+    virtual void NewStage() {}
+    virtual void PrepareNewEvent() {}
 };
 
 #endif

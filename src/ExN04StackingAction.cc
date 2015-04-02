@@ -41,14 +41,6 @@
 #include "G4SystemOfUnits.hh"
 #include "G4ios.hh"
 
-ExN04StackingAction::ExN04StackingAction()
-{ 
-}
-
-ExN04StackingAction::~ExN04StackingAction()
-{
-}
-
 G4ClassificationOfNewTrack 
 ExN04StackingAction::ClassifyNewTrack(const G4Track * aTrack)
 {
@@ -57,13 +49,4 @@ ExN04StackingAction::ClassifyNewTrack(const G4Track * aTrack)
             "proton" == particle->GetParticleName())
         ? fUrgent : fKill;
 }
-
-void ExN04StackingAction::NewStage()
-{
-}
-    
-void ExN04StackingAction::PrepareNewEvent()
-{ 
-}
-
 

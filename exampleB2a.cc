@@ -93,6 +93,9 @@ int main(int argc,char** argv)
   // Explicitly initialise runManager
   runManager->Initialize();
 
+  // don't store events
+  runManager->SetNumberOfEventsToBeStored(0);
+
   // User Action classes
   //
   G4UserStackingAction* stacking_action = new ExN04StackingAction;

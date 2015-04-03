@@ -39,6 +39,8 @@
 #endif
 
 #include "G4UImanager.hh"
+#include "QGSP_BERT_HP.hh"
+#include "FTFP_BERT_HP.hh"
 #include "FTFP_BERT.hh"
 #include "G4StepLimiterPhysics.hh"
 
@@ -73,7 +75,7 @@ int main(int argc,char** argv)
   //
   runManager->SetUserInitialization(new B2aDetectorConstruction());
 
-  G4VModularPhysicsList* physicsList = new FTFP_BERT;
+  G4VModularPhysicsList* physicsList = new FTFP_BERT_HP;
   physicsList->RegisterPhysics(new G4StepLimiterPhysics());
   runManager->SetUserInitialization(physicsList);
     

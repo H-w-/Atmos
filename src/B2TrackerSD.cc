@@ -31,6 +31,8 @@
 #include "B2TrackerSD.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4Step.hh"
+#include "G4VProcess.hh"
+#include "G4ProcessType.hh"
 #include "G4ThreeVector.hh"
 #include "G4SDManager.hh"
 #include "G4ios.hh"
@@ -92,7 +94,11 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
 
   if ("neutron" == name) {
     // only store hits on target
-    if ("Target" == aStep->GetTrack()->GetLogicalVolumeAtVertex()->GetName()) {
+    //if ("Target" == aStep->GetTrack()->GetLogicalVolumeAtVertex()->GetName()) {
+    // hits entering Target
+    if ("Target" == aStep->GetTrack()->GetNextVolume()->GetName() &&
+        NULL != aStep->GetPreStepPoint()->GetProcessDefinedStep() &&
+        fTransportation == aStep->GetPreStepPoint()->GetProcessDefinedStep()->GetProcessType()) {
       B2TrackerHit* newHit = new B2TrackerHit();
 
       newHit->SetTrackID  (aStep->GetTrack()->GetTrackID());

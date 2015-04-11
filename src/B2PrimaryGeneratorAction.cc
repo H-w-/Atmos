@@ -66,36 +66,6 @@ B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
   fParticleGun->SetParticleDefinition(particleDefinition);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
 
-  // generate a random number between 0 and 1
-	G4double powrand = ((G4double) rand() / (RAND_MAX));
-
-
-	G4double Emax = (100000 *GeV);
-	G4double Emin = (10000*GeV);
-	G4double delta = (1 - 2.8);
-  // generate particle energy from power law with random picking
-	G4double nd = pow(Emax,delta) + (pow(Emin,delta)- pow(Emax,delta))*powrand;
-		 nd = pow( nd, (1/delta) );
-
-std::ofstream fw("protonin.txt", std::ios::out);
-
-	fw << /*std::setw(10) << std::fixed << std::setprecision(6)*/ powrand << " " << nd << G4endl;
-
-
-/*   G4double height = (0.5+i)*chamberSpacing; //remember the bottom half of world is -ve but this has to be +ve
-    std::stringstream ss;
-    ss << "name_" << i;
-    G4String name = ss.str(); 
-    G4double density = (exp(-height/scale_h)) * density_air;
-    fChamberMaterials[i] = new G4Material(name, density, air);
-    fw << std::setw(10) << name 
-        << "| height (km) - "     << std::setw(10) << std::fixed << std::setprecision(2) << height/1000000 
-        << "| density fraction - " << std::setw(10) << std::scientific << std::setprecision(4) << density/density_air << G4endl;
-    nistManager->FindOrBuildMaterial(name); */
-
-  fw.close();
-
-  fParticleGun->SetParticleEnergy(nd);
 
 }
 
@@ -131,10 +101,32 @@ void B2PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     G4cerr << "Perhaps you have changed geometry." << G4endl;
     G4cerr << "The gun will be place in the center." << G4endl;
   }
-
+  std::ofstream fw("protonin.txt", std::ios::app);
   fParticleGun->SetParticlePosition(G4ThreeVector(0., 50*km, 0.));
+  for (int i=0; i<100; i++){
+    // generate a random number between 0 and 1
+    G4double powrand = ((G4double) rand() / (RAND_MAX));
 
-  fParticleGun->GeneratePrimaryVertex(anEvent);
+
+    G4double Emax = (100000 *GeV);
+    G4double Emin = (10*GeV);
+
+    G4double n = -2.8;
+    G4double nd = pow(((pow(Emax, (n+1)) - pow(Emin, (n+1)))*powrand + pow(Emin, (n+1))), (1/(n+1)));
+
+    //G4double delta = (1 - 2.8);
+   // generate particle energy from power law with random picking
+    //G4double nd = pow(Emax,delta) + (pow(Emin,delta)- pow(Emax,delta))*powrand;
+    //nd = pow( nd, (1/delta) );   
+
+    fw << /*std::setw(10) << std::fixed << std::setprecision(6)*/ powrand << " " << nd << G4endl;    
+
+    fParticleGun->SetParticleEnergy(nd);
+
+    fParticleGun->GeneratePrimaryVertex(anEvent);
+  }
+  fw << G4endl;
+  fw.close();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

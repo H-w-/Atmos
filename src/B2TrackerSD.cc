@@ -85,11 +85,11 @@ G4bool B2TrackerSD::ProcessHits(G4Step* aStep,
 
   G4String name = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
   // if a particle is unseen so far -- register
-  if (particles.find(name) == particles.end())
-    particles[name] = 1;
+  //if (particles.find(name) == particles.end())
+  //  particles[name] = 1;
   // otherwise increase the amount of times we have seen it
-  else
-    ++particles[name];
+  //else
+  //  ++particles[name];
 
 
   if ("neutron" == name) {
@@ -151,6 +151,7 @@ void B2TrackerSD::EndOfEvent(G4HCofThisEvent*)
   for ( G4int i=0; i<nofHits; i++ ) {
     fw << ((B2TrackerHit *)(*fHitsCollection)[i])->ToString() << std::endl;
   }
+  fw << std::endl;
   fw.close();
   // iterator of a map (string -> int), used to loop through saved particle counts
   std::map<G4String, int>::iterator it = particles.begin();

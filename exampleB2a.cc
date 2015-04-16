@@ -30,7 +30,6 @@
 
 #include "B2aDetectorConstruction.hh"
 #include "B2ActionInitialization.hh"
-#include "ExN04StackingAction.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -97,11 +96,6 @@ int main(int argc,char** argv)
 
   // don't store events
   runManager->SetNumberOfEventsToBeStored(0);
-
-  // User Action classes
-  //
-  G4UserStackingAction* stacking_action = new ExN04StackingAction;
-  runManager->SetUserAction(stacking_action);
 
   // Process macro or start UI session
   //

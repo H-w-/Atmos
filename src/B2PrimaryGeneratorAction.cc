@@ -49,12 +49,14 @@
 
 #include "Randomize.hh"
 
+#define N_PARTICLES 1
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
  : G4VUserPrimaryGeneratorAction()
 {
-  G4int nofParticles = 10;
+  G4int nofParticles = 1;
 
   fParticleGun = new G4ParticleGun(nofParticles);
 
@@ -73,10 +75,6 @@ B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
 
 B2PrimaryGeneratorAction::~B2PrimaryGeneratorAction()
 {
-
-
-
-
   delete fParticleGun;
 }
 
@@ -103,23 +101,18 @@ void B2PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   }
   std::ofstream fw("protonin.txt", std::ios::app);
   fParticleGun->SetParticlePosition(G4ThreeVector(0., 50*km, 0.));
-  for (int i=0; i<100; i++){
+  for (int i=0; i<N_PARTICLES; i++){
     // generate a random number between 0 and 1
-    G4double powrand = ((G4double) rand() / (RAND_MAX));
-
+    G4double rnd = ((G4double) rand() / (RAND_MAX));
 
     G4double Emax = (100000 *GeV);
     G4double Emin = (10*GeV);
 
-    G4double n = -2.7;
-    G4double nd = pow(((pow(Emax, (n+1)) - pow(Emin, (n+1)))*powrand + pow(Emin, (n+1))), (1/(n+1)));
+    G4double n = -2.7 + 1;
+    G4double nd = (pow(Emax, n) - pow(Emin, n)) * rnd + pow(Emin, n);
+    nd = pow(nd, (1/n));
 
-    //G4double delta = (1 - 2.8);
-   // generate particle energy from power law with random picking
-    //G4double nd = pow(Emax,delta) + (pow(Emin,delta)- pow(Emax,delta))*powrand;
-    //nd = pow( nd, (1/delta) );   
-
-    fw << /*std::setw(10) << std::fixed << std::setprecision(6)*/ powrand << " " << nd << G4endl;    
+    fw << rnd  << " " << nd << G4endl;    
 
     fParticleGun->SetParticleEnergy(nd);
 

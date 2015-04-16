@@ -75,66 +75,33 @@ void B2TrackerSD::Initialize(G4HCofThisEvent* hce)
 G4bool B2TrackerSD::ProcessHits(G4Step* aStep, 
                                      G4TouchableHistory*)
 {  
+  G4Track *aTrack = aStep->GetTrack();
+  G4StepPoint *preStep = aStep->GetPreStepPoint();
 
+  G4String name = aTrack->GetParticleDefinition()->GetParticleName();
 
-  // energy deposit
-  G4double edep = aStep->GetTotalEnergyDeposit();
-
-  //if (edep==0.) return false;
-
-
-  G4String name = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
-  // if a particle is unseen so far -- register
-  //if (particles.find(name) == particles.end())
-  //  particles[name] = 1;
-  // otherwise increase the amount of times we have seen it
-  //else
-  //  ++particles[name];
-
-
+  // store only neutrons
   if ("neutron" == name) {
-    // only store hits on target
-    //if ("Target" == aStep->GetTrack()->GetLogicalVolumeAtVertex()->GetName()) {
-    // hits entering Target
-    if ("Target" == aStep->GetTrack()->GetNextVolume()->GetName() &&
-        NULL != aStep->GetPreStepPoint()->GetProcessDefinedStep() &&
-        fTransportation == aStep->GetPreStepPoint()->GetProcessDefinedStep()->GetProcessType()) {
+    // only store hits entering Target
+    if ("Target" == aTrack->GetNextVolume()->GetName() &&
+        NULL != preStep->GetProcessDefinedStep() &&
+        fTransportation == preStep->GetProcessDefinedStep()->GetProcessType()) {
+
       B2TrackerHit* newHit = new B2TrackerHit();
 
-      newHit->SetTrackID  (aStep->GetTrack()->GetTrackID());
-      newHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchableHandle()
-                                                   ->GetCopyNumber());
-      newHit->SetEdep(edep);
-      newHit->SetPos (aStep->GetPostStepPoint()->GetPosition());
-      newHit ->SetKineticEnergy (aStep->GetTrack()->GetKineticEnergy()); //G4double
-      newHit->SetMomentumDirection (aStep->GetTrack()->GetMomentumDirection()); // G4ThreeVector
-      newHit->SetMomentum (aStep->GetTrack()->GetMomentum()); // G4ThreeVector
-      newHit->SetVelocity (aStep->GetTrack()->GetVelocity()); // G4double
-      newHit->SetTotalEnergy(aStep->GetTrack()->GetTotalEnergy()); //G4double
-      // G4cout << name
-      //     << " " << aStep->GetTrack()->GetParticleDefinition()->GetInstanceID()
-      //     << " " << aStep->GetTrack()->GetKineticEnergy() << G4endl;
-      fHitsCollection->insert( newHit );
+      newHit->SetTrackID            (aTrack->GetTrackID());
+      newHit->SetChamberNb          (preStep->GetTouchableHandle()->GetCopyNumber());
+      newHit->SetEdep               (aStep->GetTotalEnergyDeposit());
+      newHit->SetPos                (aStep->GetPostStepPoint()->GetPosition());
+      newHit->SetKineticEnergy      (aTrack->GetKineticEnergy());
+      newHit->SetMomentumDirection  (aTrack->GetMomentumDirection());
+      newHit->SetMomentum           (aTrack->GetMomentum());
+      newHit->SetVelocity           (aTrack->GetVelocity());
+      newHit->SetTotalEnergy        (aTrack->GetTotalEnergy());
+
+      fHitsCollection->insert(newHit);
     }
   }
-
-  // secondaries
-  // const std::vector<const G4Track*>* secondaries = aStep->GetSecondaryInCurrentStep(); // std::vector<const G4Track*>*
-  // std::vector<const G4Track*>::const_iterator it = secondaries->begin();
-  // for (; it != secondaries->end(); ++it) {
-  //   if ((*it)->GetParticleDefinition()->GetParticleName() == "neutron") {
-  //     G4cout << "FOR FUCKS SAKE " 
-  //         << (*it)->GetKineticEnergy() 
-  //         << " " << (*it)->GetParticleDefinition()->GetPDGStable() 
-  //         << " " << (*it)->GetParticleDefinition()->IsShortLived() 
-  //         << " " << (*it)->GetParticleDefinition()->GetParticleType() 
-  //         << G4endl;
-  //   }
-  // }
-
-  
-
-  //newHit->Print();
 
   return true;
 }
@@ -147,17 +114,13 @@ void B2TrackerSD::EndOfEvent(G4HCofThisEvent*)
   G4cout << G4endl
         << "-------->Hits Collection: in this event they are " << nofHits 
         << " hits in the tracker chambers: " << G4endl;
+
   std::ofstream fw("hits.txt",std::ofstream::app); // open a file
   for ( G4int i=0; i<nofHits; i++ ) {
     fw << ((B2TrackerHit *)(*fHitsCollection)[i])->ToString() << std::endl;
   }
   fw << std::endl;
   fw.close();
-  // iterator of a map (string -> int), used to loop through saved particle counts
-  std::map<G4String, int>::iterator it = particles.begin();
-  for (; it != particles.end(); ++it) {
-    G4cout << it->first << ": " << it->second << G4endl;
-  }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

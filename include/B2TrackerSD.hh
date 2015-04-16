@@ -36,7 +36,6 @@
 #include "B2TrackerHit.hh"
 
 #include <vector>
-#include <map>
 
 class G4Step;
 class G4HCofThisEvent;
@@ -63,7 +62,6 @@ class B2TrackerSD : public G4VSensitiveDetector
 
   private:
     B2TrackerHitsCollection* fHitsCollection;
-    std::map<G4String, int> particles;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

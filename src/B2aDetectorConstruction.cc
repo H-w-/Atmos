@@ -58,7 +58,6 @@
 
 #include "G4SystemOfUnits.hh"
 
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
  
 G4ThreadLocal 
@@ -120,7 +119,7 @@ G4double vertical_z = 0.5*km;
 G4ThreeVector vertical_pos = G4ThreeVector(0,-49.5*km,0);
 
 G4double tracker_x = 10*km;  
-G4double tracker_y = 50*km; //fNbofChmbers isn't working here don't know why
+G4double tracker_y = 50*km;
 G4double tracker_z = 10*km;
 
 G4double world_x = 30.5*m;
@@ -140,11 +139,8 @@ B2aDetectorConstruction::B2aDetectorConstruction()
  fCheckOverlaps(true)
 {
   fMessenger = new B2aDetectorMessenger(this);
-
   fLogicChamber = new G4LogicalVolume*[fNbOfChambers];
   fChamberMaterials = new G4Material*[fNbOfChambers];
-  
-  
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -163,15 +159,11 @@ G4VPhysicalVolume* B2aDetectorConstruction::Construct()
   // Define materials
   DefineMaterials();
 
-
-
   // Define volumes
   return DefineVolumes();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-  
 
 void B2aDetectorConstruction::DefineMaterials()
 {
@@ -198,6 +190,7 @@ void B2aDetectorConstruction::DefineMaterials()
     nistManager->FindOrBuildMaterial(name);
   }
   fw.close();
+
     // Print materials
   G4cout << *(G4Material::GetMaterialTable()) << G4endl;
 }
@@ -208,26 +201,22 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
 {
   G4Material* air  = G4Material::GetMaterial("G4_AIR");
 
-
   G4Box* worldBox
     = new G4Box("World", world_x, world_y, world_z); //its size
   G4LogicalVolume* worldLV
-    = new G4LogicalVolume(
-                          worldBox,   //its solid
+    = new G4LogicalVolume(worldBox, //its solid
                           air,      //its material
                           "World"); //its name
   
   G4VPhysicalVolume* worldPV
-    = new G4PVPlacement(
-                 0,               // no rotation
-                 G4ThreeVector(), // at (0,0,0)
-                 worldLV,         // its logical volume
-                 "World",         // its name
-                 0,               // its mother  volume
-                 false,           // no boolean operations
-                 0,               // copy number
-                 fCheckOverlaps); // checking overlaps 
-
+    = new G4PVPlacement(0,               // no rotation
+                        G4ThreeVector(), // at (0,0,0)
+                        worldLV,         // its logical volume
+                        "World",         // its name
+                        0,               // its mother  volume
+                        false,           // no boolean operations
+                        0,               // copy number
+                        fCheckOverlaps); // checking overlaps 
 
   G4Box* targetBox
     = new G4Box("Target",target_x,target_y,target_z);
@@ -244,86 +233,39 @@ G4VPhysicalVolume* B2aDetectorConstruction::DefineVolumes()
                     0,               // copy number
                     fCheckOverlaps); // checking overlaps 
 
-
-    /*G4Box* verticalBox
-    = new G4Box("Vertical",vertical_x, vertical_y , vertical_z);
-
-  fLogicVertical // the pointer bit is in header file, so it can be accesses form other .cc files
-    = new G4LogicalVolume(verticalBox, air,"Vertical",0,0,0);*/
-/*
-  new G4PVPlacement(0,               // no rotation
-                    vertical_pos,  // at (x,y,z)
-                    fLogicVertical,    // its logical volume
-                    "Vertical",        // its name
-                    worldLV,         // its mother volume
-                    false,           // no boolean operations
-                    0,               // copy number
-                    false); // checking overlaps 
-*/
-
-  /*G4Box* trackerBox
-    = new G4Box("Tracker",tracker_x,tracker_y,tracker_z);
-  G4LogicalVolume* trackerLV
-    = new G4LogicalVolume(trackerBox, air, "Tracker",0,0,0);  */
-  /*new G4PVPlacement(0,               // no rotation
-                    G4ThreeVector(), // at (x,y,z)
-                    trackerLV,       // its logical volume
-                    "Tracker",       // its name
-                    worldLV,         // its mother  volume
-                    false,           // no boolean operations
-                    0,               // copy number
-                    fCheckOverlaps); // checking overlaps 
-*/
   // Visualization attributes
 
-  G4VisAttributes* whiteVisAtt= new G4VisAttributes(G4Colour(1.0,1.0,1.0));
+  G4VisAttributes* whiteVisAtt  = new G4VisAttributes(G4Colour(1.0,1.0,1.0));
   G4VisAttributes* yellowVisAtt = new G4VisAttributes(G4Colour(1.0,0.8,0.2));
-  G4VisAttributes* redVisAtt = new G4VisAttributes(G4Colour(1.0,0.0,0.0));
+  G4VisAttributes* redVisAtt    = new G4VisAttributes(G4Colour(1.0,0.0,0.0));
 
   worldLV      ->SetVisAttributes(whiteVisAtt);
   fLogicTarget ->SetVisAttributes(redVisAtt);
-/*  trackerLV    ->SetVisAttributes(whiteVisAtt);
-  fLogicVertical ->SetVisAttributes(redVisAtt); */
-
-
-  // Example of User Limits
-  //
-  // Below is an example of how to set tracking constraints in a given
-  // logical volume
-  //
-  // Sets a max step length in the tracker region, with G4StepLimiter
-  fStepLimit = new G4UserLimits(DBL_MAX, DBL_MAX, DBL_MAX);
-  //fLogicTarget->SetUserLimits(fStepLimit);
-
 
   for (G4int copyNo=0; copyNo<fNbOfChambers; copyNo++) {
 
       G4double Yposition = firstPosition + copyNo * chamberSpacing;
-//      G4double rmax =  rmaxFirst + copyNo * rmaxIncr;
 
       G4Box* chamberBox
         = new G4Box("Chamber_solid", chamber_x, chamber_y, chamber_z);
 
-      fLogicChamber[copyNo] =
-              new G4LogicalVolume(chamberBox,fChamberMaterials[copyNo],"Chamber_LV",0,0,0);
+      fLogicChamber[copyNo]
+        = new G4LogicalVolume(chamberBox,fChamberMaterials[copyNo],"Chamber_LV",0,0,0);
 
       fLogicChamber[copyNo]->SetVisAttributes(yellowVisAtt);
-      //fLogicChamber[copyNo]->SetUserLimits(fStepLimit);
 
       new G4PVPlacement(0,                            // no rotation
                         G4ThreeVector(0,Yposition,0), // at (x,y,z)
                         fLogicChamber[copyNo],        // its logical volume
                         "Chamber_PV",                 // its name
-                        worldLV,                    // its mother  volume
+                        worldLV,                      // its mother  volume
                         false,                        // no boolean operations
                         copyNo,                       // copy number
                         fCheckOverlaps);              // checking overlaps 
 
   }
 
- 
   // Always return the physical world
-
   return worldPV;
 }
 
@@ -382,28 +324,6 @@ void B2aDetectorConstruction::SetTargetMaterial(G4String materialName)
 void B2aDetectorConstruction::SetChamberMaterial(G4String materialName)
 {
   G4cout << materialName <<"DO NOT USE THIS!" << G4endl;
-  /*G4NistManager* nistManager = G4NistManager::Instance();
-
-  G4Material* pttoMaterial =
-              nistManager->FindOrBuildMaterial(materialName);
-
-  if (fChamberMaterial != pttoMaterial) {
-     if ( pttoMaterial ) {
-        fChamberMaterial = pttoMaterial;
-        for (G4int copyNo=0; copyNo<fNbOfChambers; copyNo++) {
-            if (fLogicChamber[copyNo]) fLogicChamber[copyNo]->
-                                               SetMaterial(fChamberMaterial);
-        }
-        G4cout 
-          << G4endl 
-          << "----> The chambers are made of " << materialName << G4endl;
-     } else {
-        G4cout 
-          << G4endl 
-          << "-->  WARNING from SetChamberMaterial : "
-          << materialName << " not found" << G4endl;
-     }
-  }*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

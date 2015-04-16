@@ -111,7 +111,7 @@ void B2PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     G4double Emax = (100000 *GeV);
     G4double Emin = (10*GeV);
 
-    G4double n = -2.8;
+    G4double n = -2.7;
     G4double nd = pow(((pow(Emax, (n+1)) - pow(Emin, (n+1)))*powrand + pow(Emin, (n+1))), (1/(n+1)));
 
     //G4double delta = (1 - 2.8);

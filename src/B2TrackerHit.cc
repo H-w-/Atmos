@@ -65,15 +65,15 @@ B2TrackerHit::~B2TrackerHit() {}
 B2TrackerHit::B2TrackerHit(const B2TrackerHit& right)
   : G4VHit()
 {
-  fTrackID   = right.fTrackID;
-  fChamberNb = right.fChamberNb;
-  fEdep      = right.fEdep;
-  fPos       = right.fPos;
-  fMomentumDirection = right.fMomentumDirection;
-  fMomentum = right.fMomentum;
-  fVelocity = right.fVelocity;
-  fTotalEnergy = right.fTotalEnergy;
-  fKineticEnergy = right.fKineticEnergy;
+  fTrackID              = right.fTrackID;
+  fChamberNb            = right.fChamberNb;
+  fEdep                 = right.fEdep;
+  fPos                  = right.fPos;
+  fMomentumDirection    = right.fMomentumDirection;
+  fMomentum             = right.fMomentum;
+  fVelocity             = right.fVelocity;
+  fTotalEnergy          = right.fTotalEnergy;
+  fKineticEnergy        = right.fKineticEnergy;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -75,10 +75,8 @@ class B2TrackerHit : public G4VHit
     void SetKineticEnergy (G4double aValue) {  fKineticEnergy = aValue; };
     void SetMomentumDirection(const G4ThreeVector& aValue) {fMomentumDirection = aValue; };
     void SetVelocity(G4double val) { fVelocity = val; };
-    void SetMomentum(const G4ThreeVector &mom) { fMomentum = mom; }; //this right?
+    void SetMomentum(const G4ThreeVector &mom) { fMomentum = mom; };
     void SetTotalEnergy(G4double teng) { fTotalEnergy = teng; };
-
-
 
     // Get methods
     G4int GetTrackID() const     { return fTrackID; };
@@ -88,11 +86,8 @@ class B2TrackerHit : public G4VHit
     G4double GetKineticEnergy() const { return fKineticEnergy; };
     const G4ThreeVector& GetMomentumDirection() const { return fMomentumDirection; };
     G4double GetVelocity() const { return fVelocity; };
-    const G4ThreeVector& GetMomentum() const { return fMomentum; }; // what do for these twono void in track
+    const G4ThreeVector& GetMomentum() const { return fMomentum; };
     G4double GetTotalEnergy() const { return fTotalEnergy; };
-
-
-
 
   private:
 
@@ -100,11 +95,11 @@ class B2TrackerHit : public G4VHit
       G4int         fChamberNb;
       G4double      fEdep;
       G4ThreeVector fPos;
-      G4double fKineticEnergy;
-      G4ThreeVector fMomentumDirection; //need and here?
-      G4double fVelocity;
+      G4double      fKineticEnergy;
+      G4ThreeVector fMomentumDirection;
+      G4double      fVelocity;
       G4ThreeVector fMomentum;
-      G4double fTotalEnergy;
+      G4double      fTotalEnergy;
 
 };
 

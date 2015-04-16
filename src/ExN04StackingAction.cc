@@ -30,16 +30,9 @@
 //
 
 #include "ExN04StackingAction.hh"
-#include "G4SDManager.hh"
-#include "G4RunManager.hh"
-#include "G4Event.hh"
-#include "G4HCofThisEvent.hh"
 #include "G4Track.hh"
 #include "G4TrackStatus.hh"
 #include "G4ParticleDefinition.hh"
-#include "G4ParticleTypes.hh"
-#include "G4SystemOfUnits.hh"
-#include "G4ios.hh"
 
 G4ClassificationOfNewTrack 
 ExN04StackingAction::ClassifyNewTrack(const G4Track * aTrack)

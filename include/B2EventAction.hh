@@ -33,8 +33,6 @@
 
 #include "G4UserEventAction.hh"
 
-#include "globals.hh"
-
 /// Event action class
 
 class B2EventAction : public G4UserEventAction

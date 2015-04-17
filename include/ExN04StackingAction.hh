@@ -34,7 +34,6 @@
 
 #include "globals.hh"
 #include "G4UserStackingAction.hh"
-#include "G4ThreeVector.hh"
 
 class G4Track;
 

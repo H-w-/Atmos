@@ -36,6 +36,7 @@
 #include "G4TrajectoryContainer.hh"
 #include "G4Trajectory.hh"
 #include "G4ios.hh"
+#include "globals.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

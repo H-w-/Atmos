@@ -50,7 +50,7 @@
 
 #include "Randomize.hh"
 
-#define N_PARTICLES 1
+#define N_PARTICLES 100
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

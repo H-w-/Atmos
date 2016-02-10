@@ -72,18 +72,18 @@ G4double chamber_x = 10*km;
 G4double chamber_y = layer_y;
 G4double chamber_z = 10*km;
 G4double chamberSpacing = chamber_y*2; // from chamber center to center!
-G4double firstPosition = -48.5*km;
-G4int nbChambers = 100*km/(layer_y*2) - 1;
+G4double firstPosition = -(49.9995*km)+layer_y;
+G4int nbChambers = 100*km/(layer_y*2);
 
 G4double target_x = 10*km;
-G4double target_y = layer_y; 
+G4double target_y = 0.5*m; 
 G4double target_z = 10*km;
-G4ThreeVector target_pos = G4ThreeVector(0,-49.5*km,0);
+G4ThreeVector target_pos = G4ThreeVector(0,-49.9995*km,0);
 
 G4double vertical_x = 10*km;
 G4double vertical_y = layer_y;
 G4double vertical_z = 0.5*km;
-G4ThreeVector vertical_pos = G4ThreeVector(0,-49.5*km,0);
+G4ThreeVector vertical_pos = G4ThreeVector(0,-49.9995*km,0);
 
 G4double tracker_x = 10*km;  
 G4double tracker_y = 50*km; //fNbofChmbers isn't working here don't know why

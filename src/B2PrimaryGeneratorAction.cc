@@ -46,6 +46,7 @@
 #include <sstream>
 #include <fstream>
 #include <iomanip>
+#include <ctime>
 
 #include "Randomize.hh"
 
@@ -54,7 +55,7 @@
 B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
  : G4VUserPrimaryGeneratorAction()
 {
-  G4int nofParticles = 1;
+  G4int nofParticles = 5;
   fParticleGun = new G4ParticleGun(nofParticles);
 
   // default particle kinematic
@@ -66,20 +67,22 @@ B2PrimaryGeneratorAction::B2PrimaryGeneratorAction()
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,-1.,0.));
 
   // generate a random number between 0 and 1
-	G4double powrand = ((G4double) rand() / (RAND_MAX));
+ //for( int a = 1; a=10000; a = a ++ )
 
-
+	srand( time(0) ) ;
+	G4double powrand = ((double)rand()/RAND_MAX);
+	
 	G4double Emax = (100000 *GeV);
-	G4double Emin = (10000*GeV);
+	G4double Emin = (10*GeV);
 	G4double delta = (1 - 2.8);
   // generate particle energy from power law with random picking
 	G4double nd = pow(Emax,delta) + (pow(Emin,delta)- pow(Emax,delta))*powrand;
 		 nd = pow( nd, (1/delta) );
 
-std::ofstream fw("protonin.txt", std::ios::out);
+std::ofstream fw("protonin.txt", std::ofstream::app);
 
-	fw << /*std::setw(10) << std::fixed << std::setprecision(6)*/ powrand << " " << nd << G4endl;
-
+	fw << /*std::setw(10) << std::fixed << std::setprecision(6)*/ powrand << " " << Emax << " " << nd << G4endl;
+	
 
 /*   G4double height = (0.5+i)*chamberSpacing; //remember the bottom half of world is -ve but this has to be +ve
     std::stringstream ss;
@@ -130,7 +133,7 @@ void B2PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
     G4cerr << "The gun will be place in the center." << G4endl;
   }
 
-  fParticleGun->SetParticlePosition(G4ThreeVector(0., 51*km, 0.));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0., 50*km, 0.));
 
   fParticleGun->GeneratePrimaryVertex(anEvent);
 }
